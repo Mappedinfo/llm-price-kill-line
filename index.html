@@ -93,6 +93,8 @@
       <div class="cg" id="miscToggles">
         <span class="tg on" data-m="dep">显示已停售/上代</span>
         <span class="tg on" data-m="free">免费限量</span>
+        <span class="tg" data-m="labels">模型名标签</span>
+        <span class="tg" data-m="focus">仅突出斩杀线</span>
       </div>
     </div>
     <div id="chart"></div>
@@ -175,6 +177,11 @@ function nativePrice(o, basis){
   return BLENDED_W.cache*c + BLENDED_W.in*o.pIn + BLENDED_W.out*o.pOut;
 }
 function usd(v, cur){ return cur==='CNY' ? v/FX : v; }
+function hexA(hex, a){
+  const h=(hex||'#888888').replace('#','');
+  const n=parseInt(h.length===3 ? h.split('').map(c=>c+c).join('') : h, 16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+}
 function enriched(){
   return DATA.offerings.map(o=>{
     const nb = nativePrice(o,'blended');
@@ -191,7 +198,7 @@ function enriched(){
 let ROWS = enriched();
 
 /* ================= 状态与筛选 ================= */
-const state = { ch:{}, vendor:{}, basis:'blended', dep:true, free:true, onlyFrontier:false };
+const state = { ch:{}, vendor:{}, basis:'blended', dep:true, free:true, labels:false, focus:false };
 Object.keys(DATA.channels).forEach(k=>state.ch[k]=true);
 Object.keys(DATA.vendors).forEach(k=>state.vendor[k]=true);
 
@@ -256,27 +263,37 @@ function renderChart(){
       frontier: fIds.has(r.id), dead: dominated.has(r.id), free: isFree(r),
     });
   });
-  const series = Object.entries(seriesMap).map(([vk, pts])=>({
-    name: DATA.vendors[vk].name, type:'scatter',
+  const series = Object.entries(seriesMap).map(([vk, pts])=>{
+    const vc = DATA.vendors[vk].color;
+    return {
+    name: DATA.vendors[vk].name, type:'scatter', color: vc,
+    label:{
+      show: state.labels,
+      formatter: p=>(p&&p.data&&p.data.row)?p.data.row.model:'',
+      fontSize:11, color:'#c7cddc', position:'top', distance:6,
+    },
+    labelLayout:{ hideOverlap:true },
     symbolSize: (val, params)=>{
       const pt=params&&params.data; if(!pt) return 8;
       if(pt.free) return 13;
-      return pt.frontier?17:(pt.dead?7:10);
+      return pt.frontier?17:(pt.dead?8:10);
     },
     itemStyle:{
       color: (params)=>{
         const pt=params&&params.data;
         if(pt&&pt.free) return '#4dd0e1';
-        if(pt&&pt.frontier) return DATA.vendors[vk].color;
-        return 'rgba(120,128,150,.38)';
+        if(pt&&pt.frontier) return vc;
+        if(state.focus) return 'rgba(120,128,150,.30)'; // 突出模式:被斩杀变灰
+        return hexA(vc,.6); // 默认:厂商色半透明
       },
-      borderColor: (params)=>(params&&params.data&&params.data.frontier)?'#fff':'transparent',
-      borderWidth: (params)=>(params&&params.data&&params.data.frontier)?1.4:0,
+      borderColor: (params)=>(params&&params.data&&params.data.frontier)?'#fff':hexA(vc,.9),
+      borderWidth: (params)=>(params&&params.data&&params.data.frontier)?1.6:0.6,
     },
     emphasis:{ scale:1.25 },
     data: pts,
     z:10,
-  }));
+    };
+  });
   // 斩杀线(阶梯)
   const fl = frontier.map(f=>[f.p, f.r.ii]);
   if(fl.length){
@@ -323,7 +340,7 @@ function renderChart(){
     },
     legend:{ data:vendLegend, textStyle:{color:'#8b93a7',fontSize:12}, top:6, type:'scroll' },
     series,
-    graphic:[{type:'text',right:30,top:60,style:{text:'◆ 免费限量',fill:'#4dd0e1',fontSize:12}},{type:'text',right:30,top:80,style:{text:'★ 斩杀线上',fill:'#f5c518',fontSize:12}},{type:'text',right:30,top:100,style:{text:'· 已被斩杀',fill:'#78809a',fontSize:12}}],
+    graphic:[{type:'text',right:30,top:60,style:{text:'◆ 免费限量',fill:'#4dd0e1',fontSize:12}},{type:'text',right:30,top:80,style:{text:'★ 斩杀线上',fill:'#f5c518',fontSize:12}},{type:'text',right:30,top:100,style:{text:'· 已被斩杀(半透明小点)',fill:'#8b93a7',fontSize:12}}],
   }, {notMerge:true});
 
   // readout + KPI
