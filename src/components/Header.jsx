@@ -1,5 +1,6 @@
 import React from 'react';
-import { useI18n } from '../i18n/index.jsx';
+import { useI18n, LangSwitch } from '../i18n/index.jsx';
+import ThemeSwitch from './ThemeSwitch.jsx';
 import { DATA, FX } from '../lib/dataset.js';
 
 export default function Header() {
@@ -11,6 +12,10 @@ export default function Header() {
           <span className="dimmed">{t('site.title1')} · </span>
           <span className="accent">{t('site.title2')}</span>
         </h1>
+        <div className="top-controls">
+          <LangSwitch />
+          <ThemeSwitch />
+        </div>
       </div>
       <p className="subtitle">{t('site.subtitle')}</p>
       <div className="chips">

@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LLM Price–Capability Kill Line · 大模型斩杀线</title>
   <meta name="description" content="Price vs capability scatter with a live Pareto kill line across first-party APIs, subscriptions and aggregators." />
+  <script>
+    // 首屏前设定主题,避免闪白/闪黑
+    (function () {
+      try {
+        var t = localStorage.getItem('lkl.theme');
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.dataset.theme = t;
+      } catch (e) {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    })();
+  </script>
 </head>
 <body>
   <div id="root"></div>
