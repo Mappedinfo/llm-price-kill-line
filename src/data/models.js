@@ -4,7 +4,7 @@
  * 能力指数 ii = Artificial Analysis Intelligence Index v4.1.1
  * verified: official=官方页面直接核实;media=媒体报道(官方页面JS渲染无法直读);unverified=第三方来源
  */
-const DATA = {
+export const DATA = {
   meta: {
     asOf: '2026-08-27',
     fx: 6.784, // 1 USD = 6.784 CNY,中国货币网 2026-08-27 中间价
