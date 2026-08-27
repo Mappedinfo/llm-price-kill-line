@@ -12,7 +12,7 @@ const X_TICKS = [0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20];
 export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
   const { t } = useI18n();
   const [ref, width] = useSize();
-  const [hover, setHover] = useState(null); // {pt, cx, cy}
+  const [hover, setHover] = useState(null); // 恒为 null 或 {pt},结构单一化避免取值歧义
 
   const H = 640;
   const M = { top: 22, right: 30, bottom: 56, left: 60 };
@@ -64,6 +64,7 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
   }, [rows, basis, innerW]);
 
   const tooltipFor = (pt) => {
+    if (!pt || !pt.row) return '';
     const r = pt.row;
     const curSym = r.cur === 'CNY' ? '¥' : '$';
     const nat = (v) => (v == null ? '—' : curSym + (+v).toFixed(v < 1 ? 3 : 2));
@@ -95,7 +96,7 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
     `;
   };
 
-  const flipTip = hover ? hover.cx > M.left + innerW * 0.62 : false;
+  const flipTip = !!(hover?.pt && hover.pt.x > M.left + innerW * 0.62);
 
   return (
     <div className="chart-wrap" ref={ref}>
@@ -137,7 +138,7 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
               hover?.pt?.id === pt.id ? 'hovered' : '',
             ].join(' ')}
             style={{ transform: `translate(${pt.x}px, ${pt.y}px)` }}
-            onMouseEnter={() => setHover(pt)}
+            onMouseEnter={() => setHover({ pt })}
             onMouseLeave={() => setHover((h) => (h?.pt?.id === pt.id ? null : h))}
           >
             {pt.isFree && (
@@ -149,7 +150,7 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
                       r={pt.state === 'frontier' ? 7 : pt.state === 'dead' ? 4 : 5}
                       style={{ fill: pt.state === 'dead' && !focusOn ? hexA(pt.color, .55) : pt.color }} />
             )}
-            {(labelsOn || pt.state === 'frontier') && (
+            {(labelsOn || pt.state === 'frontier') && pt.row && (
               <text className="pt-label" y={-11} textAnchor="middle">{pt.row.model}</text>
             )}
           </g>
@@ -168,10 +169,10 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
         <span className="lg lg-dead">· {t('chart.legend.dead')}</span>
       </div>
 
-      {hover && (
+      {hover?.pt?.row && (
         <div
           className={'tooltip' + (flipTip ? ' flip' : '')}
-          style={{ top: hover.y - 8, left: hover.x }}
+          style={{ top: hover.pt.y - 8, left: hover.pt.x }}
           dangerouslySetInnerHTML={{ __html: tooltipFor(hover.pt) }}
         />
       )}

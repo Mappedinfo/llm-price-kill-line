@@ -11,6 +11,7 @@ import OfferingsTable from './components/OfferingsTable.jsx';
 import PlansSection from './components/PlansSection.jsx';
 import Methodology from './components/Methodology.jsx';
 import Footer from './components/Footer.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 
 const CH_KEYS = Object.keys(DATA.channels);
 const VENDOR_KEYS = Object.keys(DATA.vendors);
@@ -116,7 +117,9 @@ export default function App() {
 
       <Section n={1} titleKey="sec.chart.title" subKey="sec.chart.sub" descKey="sec.chart.desc">
         <div className="card">
-          <KillLineChart rows={annotated} basis={basis} labelsOn={flags.labels} focusOn={flags.focus} />
+          <ErrorBoundary fallback={t('chart.error')}>
+            <KillLineChart rows={annotated} basis={basis} labelsOn={flags.labels} focusOn={flags.focus} />
+          </ErrorBoundary>
         </div>
         <KpiRow kpis={kpis} />
         <p className="readout" dangerouslySetInnerHTML={{ __html: t('chart.readout', { n: frontier.length, list: readoutList }) }} />
