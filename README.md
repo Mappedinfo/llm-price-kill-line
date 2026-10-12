@@ -5,6 +5,8 @@
 
 **在线访问**:https://mappedinfo.github.io/llm-price-kill-line/
 
+数据渠道:官方直连(国际/中国区)· OpenRouter · **OpenCode Go 订阅** · GPU 云 · 云厂商转售 · 免费限量
+
 ## 技术栈(v2 重写)
 
 - **React 18 + Vite** 组件化开发:筛选区、散点图、各面板均为独立组件(`src/components/`)
@@ -35,15 +37,15 @@ npm run preview    # 预览构建产物(base=/llm-price-kill-line/)
 编辑 `src/data/models.js`(价格均为每 1M tokens、原币种),提交推送到 `main` 即自动重新部署。
 标注约定:`verified:'official'` = 官方页面直接核实;`'media'` = 官方页面 JS 渲染无法直读、采用权威媒体报道。
 
-## 主要发现(2026-10 快照)
+## 主要发现(2026-10 快照,含 OpenCode Go 渠道)
 
-1. **斩杀线 6 个点位**(当前在售):Claude Haiku 5.5 官方($0.08,43 分)→ Step-5 Preview@OpenRouter($0.51,44)→ GLM-5.3@OpenRouter 促销路由($0.54,45)→ Muse Spark 1.3($0.78,48)→ Claude Sonnet 5.5 官方($1.47,56)→ Claude Opus 5.5 官方($2.94,58)。61 个在售报价中 54 个被斩杀。
-2. **Anthropic 5.5 世代屠榜又降价**:Opus 5.5($4/$20)登顶 AA #1,Sonnet 5.5($2/$10)以 #2 的能力分站上斩杀线;Haiku 5.5 较上代降 10 倍成为最便宜的线上点(>100K 提示另有 5 倍加价)。
-3. **OpenAI GPT-6 世代半价接棒**:gpt-6-sol $2/$10 基价(约为 5.6 Sol 促销价一半),但 GPT-6.1 Sol(52 分)在同价位被 Sonnet 5.5(56 分)斩杀;GPT-6 Astra($10/$50)被 Opus 5.5 斩杀。GPT-5.6 仍在售未停版。
-4. **新面孔**:阶跃 Step-5 Preview(¥7/¥20,AA 44 分)10-08 上架 OpenRouter 即进入斩杀线;Mistral Large 4(上市 5 折 $0.68/$2.09)暂被 Haiku 压制;Google Gemini 4 Argon 已上榜(53 分)但官方定价页尚未挂牌。
-5. **渠道价异常**:OpenRouter 上 GLM-5.3(输入 $0.079)、Kimi K3($0.73/$10)等促销路由与官方价明显不符,直接改变斩杀线形态,已全部标注「媒体口径」;同模型最大渠道价差 ×3.6(DeepSeek V4 Pro,含 Fireworks 缓存价未公布的口径因素)。
-6. **DeepSeek V4.1-Flash**(9-10 上线)闲时 $0.15/$0.6,但混合价仍被 Haiku 5.5 压制;官方新闻称 V4-Pro 请求 9-14 起按 Flash 价路由,与定价页单列价目存在口径冲突。
-7. **Space Bunny Alpha** 为 OpenRouter 匿名 stealth 模型(社区猜为 MiniMax 系,未证实),无官方价格与能力指数,仅列说明不入图。
+1. **斩杀线只剩 3 个点位**:Muse Spark 1.3 Contributor@OC Go($0.04,48 分,以训练数据换折扣)→ Claude Sonnet 5.5 官方($1.47,56)→ Claude Opus 5.5 官方($2.94,58)。69 个在售报价中 66 个被斩杀——包括此前的中价位幸存者(Step-5、GLM-5.3、Haiku 5.5)。
+2. **Anthropic 5.5 世代屠榜又降价**:Opus 5.5($4/$20)登顶 AA #1,Sonnet 5.5($2/$10)以 #2 能力分镇守中价位;Haiku 5.5 较上代降 10 倍(>100K 提示 5 倍加价)。
+3. **OpenCode Go($10/月)作为新渠道收录**:每模型每月美元额度、批发价直传;其 Contributor 系列重写了价格-能力边界。MiMo-V2.6-Pro(小米,AA 开源第一 46 分,混合价 $0.18)在同价位斩杀 Grok 4.7。
+4. **OpenAI GPT-6 世代半价接棒**:gpt-6-sol $2/$10 基价,但 GPT-6.1 Sol(52 分)被 Sonnet 5.5 斩杀;GPT-5.6 仍在售未停版(Sol 促销至 11-21)。
+5. **新厂商入场**:腾讯混元 Hy4 preview(770B/49B,Apache 2.0)、美团 LongCat-2.0(MIT)、小米 MiMo-V2.6、阶跃 Step-5 Preview(AA 44 分,Go 档限时免费不限量)。
+6. **渠道价异常与未证实 SKU**:OpenRouter 上 GLM-5.3/Kimi K3 促销路由与官方明显不符;GLM-5.3-Prime 官方渠道不存在;Space Bunny 在 Go 有真实售价($0.15/$0.6)但开发者仍匿名(强证据指向 MiniMax M3.1-Flash)。
+7. **DeepSeek V4.1-Flash**(9-10 上线)闲时 $0.15/$0.6;"V4-Pro 请求按 Flash 价路由"与定价页单列价目存在官方口径冲突,图中取保守峰价。
 
 ## 口径限制
 

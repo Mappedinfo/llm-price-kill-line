@@ -25,6 +25,9 @@ export const DATA = {
     alibaba:   { name: '阿里 Qwen', color: '#f59e0b' },
     minimax:   { name: 'MiniMax',   color: '#f43f5e' },
     stepfun:   { name: '阶跃 StepFun', color: '#8b7cf6' },
+    longcat:   { name: '美团 LongCat', color: '#00b96b' },
+    mimo:      { name: '小米 MiMo', color: '#ff6900' },
+    hunyuan:   { name: '腾讯 Hy(混元)', color: '#2b5bd7' },
     meta:      { name: 'Meta',      color: '#0866ff' },
     mistral:   { name: 'Mistral',   color: '#ff7000' },
     other:     { name: '其他',      color: '#94a3b8' },
@@ -34,6 +37,7 @@ export const DATA = {
     official:    { name: '官方直连 API(国际/美元)', short: '官方API' },
     officialCN:  { name: '官方直连 API(中国区/人民币)', short: '官方CN' },
     openrouter:  { name: 'OpenRouter 聚合', short: 'OpenRouter' },
+    ocgo:        { name: 'OpenCode Go 订阅($10/月)', short: 'OC Go' },
     gpucloud:    { name: 'GPU 云推理(Together/Fireworks/DeepInfra 等)', short: 'GPU云' },
     hyperscale:  { name: '云厂商转售(Bedrock/Vertex/Azure)', short: '云转售' },
     free:        { name: '免费限量(:free)', short: '免费' },
@@ -111,6 +115,19 @@ export const DATA = {
     { id:'mm-m3CN', vendor:'minimax', model:'MiniMax-M3', ii:29, open:true, ch:'officialCN', cur:'CNY', pIn:2.1, pCache:0.42, pOut:8.4, src:'https://platform.minimax.cn/docs/pricing/overview', verified:'official' },
     { id:'mm-m27',  vendor:'minimax', model:'MiniMax-M2.7', ii:23, dep:true, open:true, ch:'official', cur:'USD', pIn:0.3, pCache:0.06, pOut:1.2, src:'https://platform.minimax.io/docs/pricing/overview', verified:'official', note:'官方未降价(OR 渠道 $0.21/$0.84 与官方不符)' },
 
+    /* ---- OpenCode Go 订阅($10/月;按模型月度美元额度;批发价直传) ---- */
+    { id:'oc-spark13c', vendor:'meta', model:'Muse Spark 1.3 Contributor', ii:48, ch:'ocgo', cur:'USD', pIn:0.1, pCache:0.002, pOut:0.2, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'以训练数据换折扣(区域限制、非 ZDR);混合价仅 $0.041;Go 月限 $60 / Plus $120' },
+    { id:'oc-mimo26pro', vendor:'mimo', model:'MiMo-V2.6-Pro', ii:46, ch:'ocgo', cur:'USD', pIn:0.435, pCache:0.003625, pOut:0.87, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'小米 9-21 发布,AA 开源第一;混合价 $0.18;Go 月限 $15 / Plus $60' },
+    { id:'oc-mimo26f', vendor:'mimo', model:'MiMo-V2.6-Flash', ii:38, ch:'ocgo', cur:'USD', pIn:0.14, pCache:0.0028, pOut:0.28, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'Go 月限 $60 / Plus $120' },
+    { id:'oc-hy4',   vendor:'hunyuan', model:'Hy4 preview', ii:null, ch:'ocgo', cur:'USD', pIn:0.834, pCache:0.042, pOut:2.501, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'腾讯混元 770B/49B MoE,1M 上下文,Apache 2.0 开源;AA 未收录;Go 月限 $30 / Plus $120' },
+    { id:'oc-hy3',   vendor:'hunyuan', model:'Hy3', ii:25, ch:'ocgo', cur:'USD', pIn:0.14, pCache:0.035, pOut:0.58, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'295B/21B,开源;Go 月限 $60 / Plus $240' },
+    { id:'oc-longcat2', vendor:'longcat', model:'LongCat-2.0', ii:19, ch:'ocgo', cur:'USD', pIn:0.3, pCache:0.006, pOut:1.2, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'美团 1.6T/48B MoE,MIT 开源;Go 月限 $60 / Plus $240' },
+    { id:'oc-qw37plus', vendor:'alibaba', model:'Qwen3.7 Plus (≤256K)', ii:25, ch:'ocgo', cur:'USD', pIn:0.4, pCache:0.04, pOut:1.6, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'>256K 档 $1.2/$4.8;Go 月限 $60 / Plus $180' },
+    { id:'oc-glm53', vendor:'zhipu', model:'GLM-5.3', ii:45, open:true, ch:'ocgo', cur:'USD', pIn:1.4, pCache:0.26, pOut:4.4, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'与 z.ai 官方同价;Go 月限 $15 / Plus $120' },
+    { id:'oc-k3',    vendor:'moonshot', model:'Kimi K3', ii:44, open:true, ch:'ocgo', cur:'USD', pIn:3, pCache:0.3, pOut:15, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'与官方同价;Go 月限 $15 / Plus $60' },
+    { id:'oc-step5free', vendor:'stepfun', model:'Step-5 Preview (Go 限时免费)', ii:44, ch:'free', cur:'USD', pIn:0, pCache:0, pOut:0, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'OpenCode Go/Plus 限时免费·不限量' },
+    { id:'oc-longcat25free', vendor:'longcat', model:'LongCat 2.5 Preview (Go 限时免费)', ii:null, ch:'free', cur:'USD', pIn:0, pCache:0, pOut:0, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'OpenCode Go/Plus 限时免费·不限量;AA 未收录' },
+
     /* ---- Meta / Mistral ---- */
     { id:'mt-muse13', vendor:'meta', model:'Muse Spark 1.3', ii:48, ch:'gpucloud', provider:'AA 市场均价', cur:'USD', pIn:null, pCache:null, pOut:null, blendedOverride:0.78, src:'https://artificialanalysis.ai/models/muse-spark-1-3', verified:'official', note:'Meta 现任 AA 榜旗舰(9-02 发布);无第一方按量 API,价格为 AA 市场均价口径' },
     { id:'mi-l4', vendor:'mistral', model:'Mistral Large 4', ii:38, open:true, ch:'official', cur:'USD', pIn:0.68, pCache:0.07, pOut:2.09, src:'https://docs.mistral.ai/inference/pricing', verified:'official', note:'10-06 发布(v26.10),上市 5 折促销价(标准 $1.36/$0.14/$4.18);开源权重' },
@@ -139,7 +156,7 @@ export const DATA = {
 
     /* ---- 免费限量 / 匿名 stealth ---- */
     { id:'or-m3f',    vendor:'minimax', model:'MiniMax-M3 (:free)', ii:29, open:true, ch:'free', cur:'USD', pIn:0, pCache:0, pOut:0, src:'https://openrouter.ai/models', verified:'official', note:'免费限量:充值过 $10 后 1000 次/天,否则 50 次/天' },
-    { id:'sb-alpha',  vendor:'other', model:'Space Bunny Alpha(匿名 stealth)', ii:null, ch:'openrouter', cur:'USD', pIn:null, pCache:null, pOut:null, src:'https://openrouter.ai/stealth/space-bunny-alpha', verified:'media', note:'OpenRouter 匿名 stealth 模型(9-23 上架,1M 上下文,已退出公开目录);开发者匿名,社区猜为 MiniMax 系(未证实);无官方价格与 AA 指数,不入图' },
+    { id:'oc-sb',     vendor:'other', model:'Space Bunny', ii:null, ch:'ocgo', cur:'USD', pIn:0.15, pCache:0.03, pOut:0.6, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'匿名模型(社区 tokenizer 证据强指向 MiniMax M3.1-Flash,未证实);Go 月限 $30 / Plus $120;AA 未收录' },
 
     /* ---- GPU 云(8-27 核实,未逐条复核) ---- */
     { id:'di-v4p',  vendor:'deepseek', model:'DeepSeek V4 Pro', ii:36, ch:'gpucloud', provider:'DeepInfra', cur:'USD', pIn:1.3, pCache:0.1, pOut:2.6, src:'https://deepinfra.com/models', verified:'official', note:'无峰谷之分,输出价低于官方峰价 34%' },
@@ -178,6 +195,7 @@ export const DATA = {
     { vendor:'月之暗面', plan:'Kimi 会员(客户端)', fee:'档位价应用端 JS 不可读(此前 $19/$39/$99/$199)', quota:'API 平台明确不提供订阅制;会员权益以 App 内为准', src:'https://platform.kimi.com/docs/pricing', verified:'media' },
     { vendor:'阿里', plan:'百炼 Token Plan 个人版', fee:'官方帮助页现 404,状态不明(此前限时 ¥39/¥139/¥499)', quota:'以控制台订阅页为准', src:'https://help.aliyun.com/zh/model-studio/', verified:'media' },
     { vendor:'MiniMax', plan:'Token Plan(国内)', fee:'Plus ¥49 · Max ¥119 · Ultra ¥469/月', quota:'5小时+周双窗口;积分包 ¥30=4489 分起,365 天有效;超额按目录价折算积分', src:'https://platform.minimax.cn/docs/guides/pricing-token-plan', verified:'official' },
+    { vendor:'OpenCode', plan:'Go / Go Plus', fee:'$10 · $40/月', quota:'按模型给每月美元额度(Go 如 GLM-5.3 $15、Flash 类 $60-80、K3 $15;Plus 约 2-4 倍);5h=20%/周=50%/月=100% 三窗口;额尽可启用余额按量兜底;单人间 workspace;token 单价两档相同', src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'批发折扣直传;Muse Spark Contributor 系列以训练数据换折扣' },
     { vendor:'GitHub', plan:'Copilot Free / Pro / Pro+ / Max', fee:'$0 · $10 · $39 · $100/月', quota:'credits 池模式(1 credit=$0.01);模型选择器随上游更新', src:'https://github.com/features/copilot/plans', verified:'official', note:'8-27 核实,未逐条复核' },
     { vendor:'Cursor', plan:'Hobby / Pro / Pro+ / Ultra', fee:'$0 · $20 · $60 · $200/月', quota:'自有模型池 + 第三方按 API 价后付费', src:'https://cursor.com/pricing', verified:'official', note:'8-27 核实,未逐条复核' },
     { vendor:'Kiro(AWS)', plan:'Free / Pro / Pro+ / Pro Max / Power', fee:'$0 · $20 · $40 · $100 · $200/月', quota:'月度积分 50/1000/2000/5000/10000', src:'https://kiro.dev/pricing', verified:'official', note:'8-27 核实,未逐条复核' },
@@ -185,7 +203,7 @@ export const DATA = {
 
   mechanics: [
     { channel:'OpenRouter', how:'预充值积分(卡 5.5% 费、Crypto 5%、支付宝);BYOK 每月 $25k 内免推理费,超出 5%;:free 每日 50-1000 次;:batch 恒 5 折;部分路由存在与官方不符的促销价(如 GLM-5.3、Kimi K3),已标注', src:'https://openrouter.ai/docs/faq' },
-    { channel:'OpenCode Zen', how:'预充值 $20 起 + 卡费 4.4%+$0.30;零加价;公开价目文档页已下线(转入登录态 /auth),本次无法逐条核实目录', src:'https://opencode.ai/zen' },
+    { channel:'OpenCode Go($10/月)/ Go Plus($40/月)', how:'订阅制:每模型每月美元额度(Go 档 $15-80 不等),5h=20%/周=50%/月=100% 窗口;token 单价=批发价直传、两档相同;额尽可切余额按量;Contributor 模型以训练数据换折扣(区域限制)', src:'https://opencode.ai/v2/docs/console/go/' },
     { channel:'DeepSeek', how:'峰/闲双价:闲时=峰时一半(UTC 工作日 01-04/06-10 点);9-14 起 V4-Pro 请求官方称按 V4.1-Flash 价路由(与定价页口径冲突,见 caveats)', src:'https://api-docs.deepseek.com/news/news260910' },
     { channel:'OpenAI / Anthropic / Google / Fireworks / Bedrock', how:'Batch 恒 5 折;OpenAI Flex 同 5 折、Fast 2×(astra/6.1-sol 另有 Ultrafast 6×);Anthropic Haiku 5.5 >100K 提示 5 倍加价', src:'https://developers.openai.com/api/docs/pricing' },
     { channel:'智谱 GLM Coding Plan', how:'非峰时(峰时仅工作日 14-18 点)积分半价;额度用尽即停;仅限官方指定工具', src:'https://docs.bigmodel.cn/cn/coding-plan/overview' },
@@ -206,6 +224,7 @@ export const DATA = {
     { name:'StepFun 定价详情', url:'https://platform.stepfun.com/docs/zh/guides/pricing/details' },
     { name:'Mistral Pricing', url:'https://docs.mistral.ai/inference/pricing' },
     { name:'OpenRouter Models API(2026-10-12 拉取)', url:'https://openrouter.ai/api/v1/models' },
+    { name:'OpenCode Go 控制台定价', url:'https://opencode.ai/v2/docs/console/go/' },
     { name:'OpenRouter Space Bunny Alpha(stealth)', url:'https://openrouter.ai/stealth/space-bunny-alpha' },
     { name:'Artificial Analysis 模型榜(v4.3.2)', url:'https://artificialanalysis.ai/leaderboards/models' },
     { name:'人民币汇率中间价(中国货币网)', url:'https://www.chinamoney.com.cn/chinese/bkccpr/' },
@@ -218,6 +237,8 @@ export const DATA = {
     '<b>渠道价异常</b>:OpenRouter 上 GLM-5.3(输入 $0.079)、Kimi K3($0.73/$10)、GLM-5.2 等与官方价明显不符,疑为限时促销路由,波动大,已标「媒体口径」。',
     '<b>未核实 SKU</b>:GLM-5.3-Prime 官方渠道不存在(仅聚合在售);Qwen3.8-Max-Prime 官方 ¥24/¥72 与聚合 $4/$12 有差,以官方为准。',
     '<b>能力指数换版</b>:AA 由 v4.1.1 升至 v4.3.2,与 8 月旧分数不可直接比较;GLM-5.2、Kimi K2.7、Grok 4.5/4.3 等未收录模型的旧分已清空而非沿用。',
+    '<b>OpenCode Go</b> 为订阅渠道($10/月),图中 OC Go 点为每-token 单价(批发直传),但实际可用量受每模型月度额度约束(如 GLM-5.3 每月 $15);额度用尽后需切按量或等刷新。',
+    '<b>Contributor 折扣</b>:Muse Spark 1.3 Contributor 的 $0.1/$0.2 单价以「你的数据可用于训练」换取(区域限制、非 ZDR),隐私敏感场景请勿选用。',
     '人民币价格按 2026-10-12 中间价 6.7313 折算;免费限量(:free)受每日请求数限制不参与斩杀;Space Bunny Alpha 为匿名 stealth 模型,无价格与指数,仅列说明。',
     'OpenCode Zen 公开价目文档已下线(转登录态),本版未纳入其渠道行;GPU 云与云转售部分行沿用 8-27 核实价,已逐条标注。',
   ],
