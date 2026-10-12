@@ -152,7 +152,6 @@ export const DATA = {
     { id:'or-k3b',     vendor:'moonshot', model:'Kimi K3 (:batch)', ii:44, open:true, ch:'openrouter', cur:'USD', pIn:2.28, pCache:0.228, pOut:11.4, src:'https://openrouter.ai/models', verified:'media', note:'batch 路由价反高于标准路由($0.73/$10),渠道定价混乱' },
     { id:'or-mistral4',vendor:'mistral', model:'Mistral Large 4', ii:38, open:true, ch:'openrouter', cur:'USD', pIn:0.68, pCache:0.07, pOut:2.09, src:'https://openrouter.ai/models', verified:'official', note:'同步官方促销价' },
     { id:'or-m3',      vendor:'minimax', model:'MiniMax-M3', ii:29, open:true, ch:'openrouter', cur:'USD', pIn:0.3, pCache:0.06, pOut:1.2, src:'https://openrouter.ai/models', verified:'official' },
-    { id:'or-step5',   vendor:'stepfun', model:'Step-5 Preview', ii:44, ch:'openrouter', cur:'USD', pIn:1.0, pCache:0.05, pOut:2.7, src:'https://openrouter.ai/models', verified:'official', note:'(同 sf-step5CN 的聚合渠道)' },
 
     /* ---- 免费限量 / 匿名 stealth ---- */
     { id:'or-m3f',    vendor:'minimax', model:'MiniMax-M3 (:free)', ii:29, trains:true, open:true, ch:'free', cur:'USD', pIn:0, pCache:0, pOut:0, src:'https://openrouter.ai/models', verified:'official', note:'免费限量:充值过 $10 后 1000 次/天,否则 50 次/天;免费端点可能将数据用于训练' },
