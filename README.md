@@ -25,9 +25,9 @@ npm run preview    # 预览构建产物(base=/llm-price-kill-line/)
 
 ## 数据快照
 
-- 采集与核实日期:**2026-08-27**(全部来源当日访问核实)
-- 汇率:1 USD = 6.784 CNY(中国货币网中间价)
-- 能力口径:Artificial Analysis Intelligence Index **v4.1.1**(智能体 34% + 编码 24% + 科学推理 24% + 通用 18%)
+- 采集与核实日期:**2026-10-12**(上一版 2026-08-27;全部来源当日访问核实)
+- 汇率:1 USD = 6.7313 CNY(中国货币网中间价)
+- 能力口径:Artificial Analysis Intelligence Index **v4.3.2**(与 8 月的 v4.1.1 不可直接比较;未收录新版的模型能力分留空而非沿用旧分)
 - 价格口径:混合价 = **0.7×缓存命中 + 0.2×输入 + 0.1×输出**(与 AA 相同的 7:2:1 加权);可切换纯输入/输出口径
 
 ### 更新数据
@@ -35,14 +35,15 @@ npm run preview    # 预览构建产物(base=/llm-price-kill-line/)
 编辑 `src/data/models.js`(价格均为每 1M tokens、原币种),提交推送到 `main` 即自动重新部署。
 标注约定:`verified:'official'` = 官方页面直接核实;`'media'` = 官方页面 JS 渲染无法直读、采用权威媒体报道。
 
-## 主要发现(2026-08 快照)
+## 主要发现(2026-10 快照)
 
-1. **斩杀线只有 5 个点位**(默认视图,当前在售):DeepSeek V4 Flash@OpenRouter($0.03,52 分)→ GLM-5.3-Flash 官方($0.05,57 分)→ GLM-5.3 官方($0.90,60 分)→ Grok 4.6 官方($1.35,61 分)→ Claude Opus 5 官方($3.85,63 分)。其余在售报价全部被斩杀——包括 GPT-5.6 全系(Sol 被 Grok 4.6 以不到一半的价格同分斩杀,Luna 被 GLM-5.3-Flash 低价高分斩杀)与 Gemini 全系。
-2. **聚合渠道出现"倒挂"**:OpenRouter 的 DeepSeek V4 Flash 只有官方峰价 1/7;Gemini 3.7 Flash 路由价约为官方促销价一半;GPT-5.6 Sol 在 OpenRouter/Zen 享 5 折;GLM-5.2 聚合价低于官方 15%。**同模型最大渠道价差 ×7.1**,GPT-5.6 Sol 达 ×2.8(Azure vs OpenRouter)。
-3. **Azure 转售 GPT-5.6 Sol 比 OpenAI 直连贵 25-50%**,Bedrock 地理端点 +10%;超大规模云只在合规场景有意义。
-4. **开源三强**(Kimi K3、GLM-5.3、Qwen3.8-2.4T)能力分 58-60 已逼近闭源旗舰(61-63),价格低 2-4 倍;DeepInfra 的 GLM-5.2 比官方再低 46%。
-5. **编程 Token 包是单位成本最低的正规渠道**:智谱 GLM Coding Plan 官方口径"比按量 API 最高省 92%"(积分系数:GLM-5.3 输入 6.9/缓存 1.7/输出 24 积分每万 tokens,非峰时再半价);阿里 Token Plan(¥39 起)与 MiniMax Token Plan(¥49 起)同类。
-6. **免费限量层**真实存在:OpenRouter 的 GLM-5.2:free(能力 53 分)每日 1000 次,轻量个人使用几乎零成本。
+1. **斩杀线 6 个点位**(当前在售):Claude Haiku 5.5 官方($0.08,43 分)→ Step-5 Preview@OpenRouter($0.51,44)→ GLM-5.3@OpenRouter 促销路由($0.54,45)→ Muse Spark 1.3($0.78,48)→ Claude Sonnet 5.5 官方($1.47,56)→ Claude Opus 5.5 官方($2.94,58)。61 个在售报价中 54 个被斩杀。
+2. **Anthropic 5.5 世代屠榜又降价**:Opus 5.5($4/$20)登顶 AA #1,Sonnet 5.5($2/$10)以 #2 的能力分站上斩杀线;Haiku 5.5 较上代降 10 倍成为最便宜的线上点(>100K 提示另有 5 倍加价)。
+3. **OpenAI GPT-6 世代半价接棒**:gpt-6-sol $2/$10 基价(约为 5.6 Sol 促销价一半),但 GPT-6.1 Sol(52 分)在同价位被 Sonnet 5.5(56 分)斩杀;GPT-6 Astra($10/$50)被 Opus 5.5 斩杀。GPT-5.6 仍在售未停版。
+4. **新面孔**:阶跃 Step-5 Preview(¥7/¥20,AA 44 分)10-08 上架 OpenRouter 即进入斩杀线;Mistral Large 4(上市 5 折 $0.68/$2.09)暂被 Haiku 压制;Google Gemini 4 Argon 已上榜(53 分)但官方定价页尚未挂牌。
+5. **渠道价异常**:OpenRouter 上 GLM-5.3(输入 $0.079)、Kimi K3($0.73/$10)等促销路由与官方价明显不符,直接改变斩杀线形态,已全部标注「媒体口径」;同模型最大渠道价差 ×3.6(DeepSeek V4 Pro,含 Fireworks 缓存价未公布的口径因素)。
+6. **DeepSeek V4.1-Flash**(9-10 上线)闲时 $0.15/$0.6,但混合价仍被 Haiku 5.5 压制;官方新闻称 V4-Pro 请求 9-14 起按 Flash 价路由,与定价页单列价目存在口径冲突。
+7. **Space Bunny Alpha** 为 OpenRouter 匿名 stealth 模型(社区猜为 MiniMax 系,未证实),无官方价格与能力指数,仅列说明不入图。
 
 ## 口径限制
 
