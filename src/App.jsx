@@ -119,7 +119,7 @@ export default function App() {
       <Section n={1} titleKey="sec.chart.title" subKey="sec.chart.sub" descKey="sec.chart.desc">
         <div className="card">
           <ErrorBoundary fallback={t('chart.error')}>
-            <KillLineChart rows={annotated} basis={basis} labelsOn={flags.labels} focusOn={flags.focus} />
+            <KillLineChart rows={annotated} basis={basis} labelsOn={flags.labels} focusOn={flags.focus} onReset={resetAll} />
           </ErrorBoundary>
         </div>
         <KpiRow kpis={kpis} />

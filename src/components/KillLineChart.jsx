@@ -9,7 +9,7 @@ const Y_MIN = 25, Y_MAX = 66;
 const FREE_PIN = 0.032;
 const X_TICKS = [0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20];
 
-export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
+export default function KillLineChart({ rows, basis, labelsOn, focusOn, onReset }) {
   const { t } = useI18n();
   const [ref, width] = useSize();
   const [hover, setHover] = useState(null); // 恒为 null 或 {pt},结构单一化避免取值歧义
@@ -180,12 +180,16 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
           </g>
         ))}
 
-        {pts.length === 0 && (
-          <text x={M.left + innerW / 2} y={M.top + innerH / 2} className="empty-hint" textAnchor="middle">
-            – –
-          </text>
-        )}
       </svg>
+
+      {pts.length === 0 && (
+        <div className="chart-empty">
+          <span>{t('chart.empty')}</span>
+          {onReset && (
+            <button type="button" className="pill on slim" onClick={onReset}>{t('chart.emptyReset')}</button>
+          )}
+        </div>
+      )}
 
       <div className="chart-legend">
         <span className="lg lg-free">◆ {t('chart.legend.free')}</span>
