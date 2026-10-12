@@ -182,8 +182,11 @@ h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
   fill: none; stroke: rgba(255, 77, 94, 0.16); stroke-width: 9; stroke-linejoin: round;
 }
 
-.pt { transition: transform 0.55s var(--ease), opacity 0.35s ease; will-change: transform; animation: pop-in 0.4s var(--ease) backwards; }
-@keyframes pop-in { from { opacity: 0; scale: 0.4; } to { opacity: 1; scale: 1; } }
+.pt { transition: transform 0.55s var(--ease), opacity 0.35s ease, scale 0.45s var(--ease); will-change: transform; }
+.pt.entering { animation: pop-in 0.45s var(--ease) backwards; }
+.pt.leaving { opacity: 0 !important; scale: 0.2; pointer-events: none; }
+.pt.leaving .pt-label { opacity: 0; }
+@keyframes pop-in { from { opacity: 0; scale: 0.3; } to { opacity: 1; scale: 1; } }
 .pt .dot-c {
   stroke: var(--border-strong); stroke-width: 0.75;
   transition: r 0.25s var(--ease), fill 0.3s ease, stroke 0.25s ease, opacity 0.3s ease;

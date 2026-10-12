@@ -116,7 +116,7 @@ export const DATA = {
     { id:'mm-m27',  vendor:'minimax', model:'MiniMax-M2.7', ii:23, dep:true, open:true, ch:'official', cur:'USD', pIn:0.3, pCache:0.06, pOut:1.2, src:'https://platform.minimax.io/docs/pricing/overview', verified:'official', note:'官方未降价(OR 渠道 $0.21/$0.84 与官方不符)' },
 
     /* ---- OpenCode Go 订阅($10/月;按模型月度美元额度;批发价直传) ---- */
-    { id:'oc-spark13c', vendor:'meta', model:'Muse Spark 1.3 Contributor', ii:48, ch:'ocgo', cur:'USD', pIn:0.1, pCache:0.002, pOut:0.2, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'以训练数据换折扣(区域限制、非 ZDR);混合价仅 $0.041;Go 月限 $60 / Plus $120' },
+    { id:'oc-spark13c', vendor:'meta', model:'Muse Spark 1.3 Contributor', ii:48, trains:true, ch:'ocgo', cur:'USD', pIn:0.1, pCache:0.002, pOut:0.2, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'以训练数据换折扣(区域限制、非 ZDR);混合价仅 $0.041;Go 月限 $60 / Plus $120' },
     { id:'oc-mimo26pro', vendor:'mimo', model:'MiMo-V2.6-Pro', ii:46, ch:'ocgo', cur:'USD', pIn:0.435, pCache:0.003625, pOut:0.87, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'小米 9-21 发布,AA 开源第一;混合价 $0.18;Go 月限 $15 / Plus $60' },
     { id:'oc-mimo26f', vendor:'mimo', model:'MiMo-V2.6-Flash', ii:38, ch:'ocgo', cur:'USD', pIn:0.14, pCache:0.0028, pOut:0.28, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'Go 月限 $60 / Plus $120' },
     { id:'oc-hy4',   vendor:'hunyuan', model:'Hy4 preview', ii:null, ch:'ocgo', cur:'USD', pIn:0.834, pCache:0.042, pOut:2.501, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'腾讯混元 770B/49B MoE,1M 上下文,Apache 2.0 开源;AA 未收录;Go 月限 $30 / Plus $120' },
@@ -155,7 +155,7 @@ export const DATA = {
     { id:'or-step5',   vendor:'stepfun', model:'Step-5 Preview', ii:44, ch:'openrouter', cur:'USD', pIn:1.0, pCache:0.05, pOut:2.7, src:'https://openrouter.ai/models', verified:'official', note:'(同 sf-step5CN 的聚合渠道)' },
 
     /* ---- 免费限量 / 匿名 stealth ---- */
-    { id:'or-m3f',    vendor:'minimax', model:'MiniMax-M3 (:free)', ii:29, open:true, ch:'free', cur:'USD', pIn:0, pCache:0, pOut:0, src:'https://openrouter.ai/models', verified:'official', note:'免费限量:充值过 $10 后 1000 次/天,否则 50 次/天' },
+    { id:'or-m3f',    vendor:'minimax', model:'MiniMax-M3 (:free)', ii:29, trains:true, open:true, ch:'free', cur:'USD', pIn:0, pCache:0, pOut:0, src:'https://openrouter.ai/models', verified:'official', note:'免费限量:充值过 $10 后 1000 次/天,否则 50 次/天;免费端点可能将数据用于训练' },
     { id:'oc-sb',     vendor:'other', model:'Space Bunny', ii:null, ch:'ocgo', cur:'USD', pIn:0.15, pCache:0.03, pOut:0.6, src:'https://opencode.ai/v2/docs/console/go/', verified:'official', note:'匿名模型(社区 tokenizer 证据强指向 MiniMax M3.1-Flash,未证实);Go 月限 $30 / Plus $120;AA 未收录' },
 
     /* ---- GPU 云(8-27 核实,未逐条复核) ---- */

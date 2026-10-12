@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useI18n } from '../i18n/index.jsx';
 import { DATA, nativePrice } from '../lib/dataset.js';
 import { fmtMoney, fmtNative, hexA } from '../lib/format.js';
@@ -13,6 +13,10 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
   const { t } = useI18n();
   const [ref, width] = useSize();
   const [hover, setHover] = useState(null); // 恒为 null 或 {pt},结构单一化避免取值歧义
+
+  /* 差分动画:留场点原地更新、入场点弹入、离场点淡出后再移除(渲染集合) */
+  const [shown, setShown] = useState([]); // [{pt, entering, leaving}]
+  const prevById = useRef(new Map());
 
   const H = 640;
   const M = { top: 22, right: 30, bottom: 56, left: 60 };
@@ -45,6 +49,24 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, basis, innerW, innerH]);
+
+  useEffect(() => {
+    setShown(() => {
+      const next = [];
+      const seen = new Set();
+      for (const pt of pts) {
+        seen.add(pt.id);
+        next.push({ pt, entering: !prevById.current.has(pt.id), leaving: false });
+      }
+      for (const [, oldPt] of prevById.current) {
+        if (!seen.has(oldPt.id)) next.push({ pt: oldPt, entering: false, leaving: true });
+      }
+      prevById.current = new Map(pts.map((p) => [p.id, p]));
+      return next;
+    });
+    const t = setTimeout(() => setShown((prev) => prev.filter((e) => !e.leaving)), 520);
+    return () => clearTimeout(t);
+  }, [pts]);
 
   // 斩杀线阶梯路径
   const stepPath = useMemo(() => {
@@ -127,14 +149,16 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn }) {
           </>
         )}
 
-        {/* 点位 */}
-        {pts.map((pt) => (
+        {/* 点位(差分动画:entering 弹入 / leaving 淡出 / 其余原地过渡) */}
+        {shown.map(({ pt, entering, leaving }) => (
           <g
             key={pt.id}
             className={[
               'pt',
               's-' + pt.state,
-              focusOn && pt.state === 'dead' ? 'dimmed-hard' : '',
+              entering ? 'entering' : '',
+              leaving ? 'leaving' : '',
+              focusOn && pt.state === 'dead' && !leaving ? 'dimmed-hard' : '',
               hover?.pt?.id === pt.id ? 'hovered' : '',
             ].join(' ')}
             style={{ transform: `translate(${pt.x}px, ${pt.y}px)` }}

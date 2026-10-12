@@ -99,7 +99,7 @@ export default function FilterBar(props) {
               <span className="flabel">{t('ctrl.resetAll')}</span>
             </div>
             <div className="misc-row">
-              {['dep', 'free', 'labels', 'focus'].map((m) => (
+              {['dep', 'free', 'noTrain', 'labels', 'focus'].map((m) => (
                 <button key={m} className={'pill slim' + (flags[m] ? ' on' : '')} onClick={() => toggleFlag(m)}>
                   {t('ctrl.' + m)}
                 </button>

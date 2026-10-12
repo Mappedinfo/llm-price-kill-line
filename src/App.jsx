@@ -15,7 +15,7 @@ import ErrorBoundary from './components/ErrorBoundary.jsx';
 
 const CH_KEYS = Object.keys(DATA.channels);
 const VENDOR_KEYS = Object.keys(DATA.vendors);
-const DEFAULT_FLAGS = { dep: true, free: true, labels: false, focus: false };
+const DEFAULT_FLAGS = { dep: true, free: true, noTrain: false, labels: false, focus: false };
 
 function Section({ n, titleKey, subKey, descKey, children }) {
   const { t } = useI18n();
@@ -53,7 +53,7 @@ export default function App() {
     setFlags(DEFAULT_FLAGS);
   };
 
-  // 可见行(含免费/停售筛选)
+  // 可见行(含免费/停售/训练数据筛选)
   const visible = useMemo(
     () =>
       allRows.filter(
@@ -61,9 +61,10 @@ export default function App() {
           selCh[r.ch] &&
           selVendor[r.vendor] &&
           (flags.dep || !r.dep) &&
-          (!(r.ch === 'free' && !flags.free))
+          (!(r.ch === 'free' && !flags.free)) &&
+          (!(flags.noTrain && r.trains))
       ),
-    [allRows, selCh, selVendor, flags.dep, flags.free]
+    [allRows, selCh, selVendor, flags.dep, flags.free, flags.noTrain]
   );
 
   // 斩杀线(仅可见集合内计算)
