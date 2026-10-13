@@ -6,6 +6,8 @@ const STORE_KEY = 'lkl.locale';
 
 function detect() {
   try {
+    const h = new URLSearchParams(location.hash.replace(/^#/, '')).get('lang');
+    if (h && dict[h]) return h;
     const saved = localStorage.getItem(STORE_KEY);
     if (saved && dict[saved]) return saved;
   } catch { /* ignore */ }
@@ -18,6 +20,14 @@ export function I18nProvider({ children }) {
   useEffect(() => {
     document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en-US';
     try { localStorage.setItem(STORE_KEY, locale); } catch { /* ignore */ }
+    // 同步 lang 到 URL hash(可分享)
+    try {
+      const p = new URLSearchParams(location.hash.replace(/^#/, ''));
+      if (p.get('lang') !== locale) {
+        p.set('lang', locale);
+        history.replaceState(null, '', '#' + p.toString());
+      }
+    } catch { /* ignore */ }
   }, [locale]);
 
   const value = useMemo(() => {

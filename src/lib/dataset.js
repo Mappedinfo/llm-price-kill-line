@@ -2,34 +2,81 @@ import { DATA } from '../data/models.js';
 
 export const FX = DATA.meta.fx;
 export const BLENDED_W = { cache: 0.7, in: 0.2, out: 0.1 };
+/** 混合口径:均衡 = AA 7:2:1;重度 agent = 编码代理真实账单结构(real-api-pricing 同款 97:2.5:0.5) */
+export const MIXES = {
+  std:   { cache: 0.7,   in: 0.2,   out: 0.1 },
+  agent: { cache: 0.97,  in: 0.025, out: 0.005 },
+};
+export const mixW = (mix) => MIXES[mix] || MIXES.std;
 const MIN_P = 0.028; // 免费点钉在轴最左侧
 
-/** 混合价(原币种);blendedOverride 用于 AA 市场均价口径 */
-export function nativePrice(o, basis) {
+/** 混合价(原币种);blendedOverride 用于 AA 市场均价口径(不随口径切换) */
+export function nativePrice(o, basis, mix = 'std') {
   if (basis === 'in') return o.pIn ?? null;
   if (basis === 'out') return o.pOut ?? null;
   if (o.blendedOverride != null) return o.blendedOverride;
   const c = o.pCache != null ? o.pCache : o.pIn;
   if (o.pIn == null || o.pOut == null) return null;
-  return BLENDED_W.cache * c + BLENDED_W.in * o.pIn + BLENDED_W.out * o.pOut;
+  const w = mixW(mix);
+  return w.cache * c + w.in * o.pIn + w.out * o.pOut;
 }
 export const toUsd = (v, cur) => (cur === 'CNY' ? v / FX : v);
 
-let _rows = null;
-export function getRows() {
-  if (_rows) return _rows;
-  _rows = DATA.offerings.map((o) => ({
+const _rowsCache = {};
+export function getRows(mix = 'std') {
+  if (_rowsCache[mix]) return _rowsCache[mix];
+  const w = mixW(mix);
+  const rows = DATA.offerings.map((o) => ({
     ...o,
     blendedUsd:
       o.blendedOverride != null
         ? o.blendedOverride
-        : (() => { const n = nativePrice(o, 'blended'); return n == null ? null : toUsd(n, o.cur); })(),
+        : (() => { const n = nativePrice(o, 'blended', mix); return n == null ? null : toUsd(n, o.cur); })(),
     price(basis) {
-      const v = nativePrice(o, basis);
+      const v = nativePrice(o, basis, mix);
       return v == null ? null : toUsd(v, o.cur);
     },
+    avgRawUsd:
+      o.pIn == null || o.pOut == null ? null : (o.pIn + (o.pCache ?? o.pIn) + o.pOut) / 3,
+    _w: w,
   }));
-  return _rows;
+  _rowsCache[mix] = rows;
+  return rows;
+}
+
+/**
+ * 订阅量化点:真实单价 = 月费 ÷ 月可用 tokens(混合口径切换时重算)
+ * - usd 额度:可买 tokens = 额度 ÷ 混合价;real = 月费 ÷ tokens
+ * - yi 实测(raw tokens):按 raw 均价与混合价的比例折算为混合 token 等效
+ * - credits:credits/1M(mix) = Σ w×系数×100;tokens = 额度 ÷ 该值
+ */
+export function getSubsPoints(mix = 'std') {
+  const w = mixW(mix);
+  return DATA.subs
+    .map((sp) => {
+      const blended = w.cache * sp.p.cache + w.in * sp.p.in + w.out * sp.p.out; // $/1M 混合
+      const avgRaw = (sp.p.in + sp.p.cache + sp.p.out) / 3;
+      let tokensM = null; // 每月可用的「混合 token」百万数
+      if (sp.allowance.usd != null) {
+        tokensM = sp.allowance.usd / blended;
+      } else if (sp.allowance.yi != null) {
+        const rawM = sp.allowance.yi * 100; // 亿 → 百万
+        tokensM = rawM * (avgRaw / blended);
+      } else if (sp.allowance.credits != null) {
+        const perM = (w.in * sp.allowance.f.in + w.cache * sp.allowance.f.cache + w.out * sp.allowance.f.out) * 100;
+        tokensM = sp.allowance.credits / perM;
+      }
+      if (tokensM == null || !isFinite(tokensM) || tokensM <= 0) return null;
+      const real = sp.feeUsd ?? parseFloat(sp.plan.match(/\$([\d.]+)/)?.[1] ?? '0');
+      return {
+        ...sp,
+        blended,
+        tokensM,
+        real: real / tokensM,
+        feeUsd: real,
+      };
+    })
+    .filter(Boolean);
 }
 
 /** 帕累托前沿:按价格升序扫描,能力分创出新高者存活。免费限量不参与。 */
@@ -53,6 +100,26 @@ export function computeFrontier(rows, basis) {
     if (killed) dominated.add(r.id);
   }
   return { frontier, fIds, dominated };
+}
+
+/** 通用帕累托前沿(x=price, y=ii) */
+export function frontierOf(points) {
+  const pts = points.filter((p) => p.real != null && p.ii != null).sort((a, b) => a.real - b.real || b.ii - a.ii);
+  let best = -1;
+  const out = [];
+  for (const p of pts) {
+    if (p.ii > best) { best = p.ii; out.push(p); }
+  }
+  const fIds = new Set(out.map((p) => p.id));
+  const dominated = new Set(
+    points.filter(
+      (p) =>
+        !fIds.has(p.id) &&
+        p.real != null && p.ii != null &&
+        points.some((q) => q.id !== p.id && q.real <= p.real * 1.0001 && q.ii >= p.ii)
+    ).map((p) => p.id)
+  );
+  return { frontier: out.map((p) => ({ r: p, p: p.real })), fIds, dominated };
 }
 
 /** 同模型跨渠道价差分组(用于渠道价差面板) */

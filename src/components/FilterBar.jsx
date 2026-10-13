@@ -56,19 +56,33 @@ export default function FilterBar(props) {
   const { t } = useI18n();
   const {
     channels, vendors,
-    selCh, selVendor, basis, flags,
+    selCh, selVendor, basis, mix, mode, flags,
     toggleCh, toggleVendor,
     setChAll, setChNone, setVendorAll, setVendorNone,
-    setBasis, toggleFlag, resetAll,
+    setBasis, setMix, setMode, toggleFlag, resetAll,
     chCounts, vendorCounts,
   } = props;
 
   return (
     <div className="filterbar card">
+      <div className="view-row">
+        <span className="flabel">{t('ctrl.view')}</span>
+        <SegButtonGroup
+          value={mode}
+          onChange={setMode}
+          options={[{ key: 'list', label: t('ctrl.view.list') }, { key: 'subs', label: t('ctrl.view.subs') }]}
+        />
+        <span className="flabel" style={{ marginLeft: '14px' }}>{t('ctrl.mix')}</span>
+        <SegButtonGroup
+          value={mix}
+          onChange={setMix}
+          options={[{ key: 'std', label: t('ctrl.mix.std') }, { key: 'agent', label: t('ctrl.mix.agent') }]}
+        />
+      </div>
       <div className="filterbar-main">
         <div className="filterbar-groups">
           <ChipGroup
-            label={t('ctrl.channel')}
+            label={t('ctrl.channel') + (mode === 'subs' ? t('ctrl.channel.subsNote') : '')}
             items={channels.map(([k, c]) => ({ key: k, label: t('ch.' + k), count: chCounts[k] || 0 }))}
             selected={selCh}
             onToggle={toggleCh}

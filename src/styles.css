@@ -183,6 +183,12 @@ h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
 }
 
 .pt { transition: transform 0.55s var(--ease), opacity 0.35s ease, scale 0.45s var(--ease); will-change: transform; }
+.killchart.interacting { cursor: grabbing; }
+.killchart.interacting .pt { transition: none !important; }
+.zoom-box { fill: rgba(77, 208, 225, 0.12); stroke: var(--cyan); stroke-width: 1; stroke-dasharray: 4 3; }
+.chart-toolbar { display: flex; align-items: center; gap: 12px; padding: 2px 6px 0; flex-wrap: wrap; }
+.chart-toolbar .zoom-hint { font-size: 11px; color: var(--txt-faint); }
+.chart-toolbar .spacer { flex: 1; }
 .pt.entering { animation: pop-in 0.45s var(--ease) backwards; }
 .pt.leaving { opacity: 0 !important; scale: 0.2; pointer-events: none; }
 .pt.leaving .pt-label { opacity: 0; }

@@ -200,6 +200,43 @@ export const DATA = {
     { vendor:'Kiro(AWS)', plan:'Free / Pro / Pro+ / Pro Max / Power', fee:'$0 · $20 · $40 · $100 · $200/月', quota:'月度积分 50/1000/2000/5000/10000', src:'https://kiro.dev/pricing', verified:'official', note:'8-27 核实,未逐条复核' },
   ],
 
+  /* ============ 订阅量化点(第二视图:真实单价 = 月费 ÷ 月可用 tokens) ============
+   * allowance 三种形态:
+   *   { usd: N }          —— OC Go 型:每模型每月美元额度,按当前混合口径换算 tokens
+   *   { yi: N }           —— 社区实测月可用 tokens(亿),来自 real-api-pricing 开放数据集
+   *   { credits: N, f:{in,cache,out} } —— 智谱积分制,按官方额度系数推导(derived)
+   * p 为该模型第一方刊例价(USD /1M),混合口径切换时真实价随之重算
+   */
+  subs: [
+    { id:'go10-glm53',   vendor:'zhipu', plan:'OpenCode Go $10', model:'GLM-5.3', ii:45, p:{in:1.4,cache:0.26,out:4.4}, allowance:{usd:15}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go10-glm53f',  vendor:'zhipu', plan:'OpenCode Go $10', model:'GLM-5.3-Flash', ii:42, p:{in:0.15,cache:0.03,out:0.5}, allowance:{usd:60}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go10-k3',      vendor:'moonshot', plan:'OpenCode Go $10', model:'Kimi K3', ii:44, p:{in:3,cache:0.3,out:15}, allowance:{usd:15}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go10-m3',      vendor:'minimax', plan:'OpenCode Go $10', model:'MiniMax-M3', ii:29, p:{in:0.3,cache:0.06,out:1.2}, allowance:{usd:60}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go10-qwmax',   vendor:'alibaba', plan:'OpenCode Go $10', model:'Qwen3.8-Max', ii:45, p:{in:2,cache:0.25,out:6}, allowance:{usd:15}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go10-dsv41',   vendor:'deepseek', plan:'OpenCode Go $10', model:'DeepSeek V4.1 Flash', ii:39, p:{in:0.3,cache:0.006,out:1.2}, allowance:{usd:80}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/', note:'按峰时价;闲时额度实际翻倍' },
+    { id:'go10-g6luna',  vendor:'openai', plan:'OpenCode Go $10', model:'GPT-6 Luna', ii:38, p:{in:0.1,cache:0.01,out:0.5}, allowance:{usd:15}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go10-haiku55', vendor:'anthropic', plan:'OpenCode Go $10', model:'Claude Haiku 5.5', ii:43, p:{in:0.1,cache:0.01,out:0.5}, allowance:{usd:15}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go10-g47',     vendor:'xai', plan:'OpenCode Go $10', model:'Grok 4.7', ii:46, p:{in:2,cache:0.5,out:6}, allowance:{usd:15}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go10-mimo26p', vendor:'mimo', plan:'OpenCode Go $10', model:'MiMo-V2.6-Pro', ii:46, p:{in:0.435,cache:0.003625,out:0.87}, allowance:{usd:15}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go10-spark13c', vendor:'meta', plan:'OpenCode Go $10', model:'Muse Spark 1.3 Contributor', ii:48, trains:true, p:{in:0.1,cache:0.002,out:0.2}, allowance:{usd:60}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/', note:'以训练数据换折扣' },
+    { id:'go40-glm53',   vendor:'zhipu', plan:'OpenCode Go Plus $40', model:'GLM-5.3', ii:45, p:{in:1.4,cache:0.26,out:4.4}, allowance:{usd:120}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go40-k3',      vendor:'moonshot', plan:'OpenCode Go Plus $40', model:'Kimi K3', ii:44, p:{in:3,cache:0.3,out:15}, allowance:{usd:60}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go40-g47',     vendor:'xai', plan:'OpenCode Go Plus $40', model:'Grok 4.7', ii:46, p:{in:2,cache:0.5,out:6}, allowance:{usd:60}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'go40-dsv41',   vendor:'deepseek', plan:'OpenCode Go Plus $40', model:'DeepSeek V4.1 Flash', ii:39, p:{in:0.3,cache:0.006,out:1.2}, allowance:{usd:160}, conf:'official', src:'https://opencode.ai/v2/docs/console/go/' },
+    { id:'cp-plus-61sol', vendor:'openai', plan:'ChatGPT Plus $20', model:'GPT-6.1 Sol', ii:52, p:{in:2,cache:0.1,out:10}, allowance:{yi:8.7}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cp-plus-6luna', vendor:'openai', plan:'ChatGPT Plus $20', model:'GPT-6 Luna', ii:38, p:{in:0.1,cache:0.01,out:0.5}, allowance:{yi:92.03}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cp-plus-astra', vendor:'openai', plan:'ChatGPT Plus $20', model:'GPT-6 Astra', ii:53, p:{in:10,cache:1,out:50}, allowance:{yi:1.59}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cp-pro20-astra', vendor:'openai', plan:'ChatGPT Pro 20x $200', model:'GPT-6 Astra', ii:53, p:{in:10,cache:1,out:50}, allowance:{yi:38.12}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cl-pro-opus55',  vendor:'anthropic', plan:'Claude Pro $20', model:'Claude Opus 5.5', ii:58, p:{in:4,cache:0.2,out:20}, allowance:{yi:30.54}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cl-pro-son55',   vendor:'anthropic', plan:'Claude Pro $20', model:'Claude Sonnet 5.5', ii:56, p:{in:2,cache:0.1,out:10}, allowance:{yi:61.08}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cl-pro-haiku55', vendor:'anthropic', plan:'Claude Pro $20', model:'Claude Haiku 5.5', ii:43, p:{in:0.1,cache:0.01,out:0.5}, allowance:{yi:596.42}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cl-max5-opus55', vendor:'anthropic', plan:'Claude Max 5x $100', model:'Claude Opus 5.5', ii:58, p:{in:4,cache:0.2,out:20}, allowance:{yi:183.34}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cl-max20-opus55',vendor:'anthropic', plan:'Claude Max 20x $200', model:'Claude Opus 5.5', ii:58, p:{in:4,cache:0.2,out:20}, allowance:{yi:315.38}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cl-max20-son55', vendor:'anthropic', plan:'Claude Max 20x $200', model:'Claude Sonnet 5.5', ii:56, p:{in:2,cache:0.1,out:10}, allowance:{yi:630.76}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'cl-max20-fable51', vendor:'anthropic', plan:'Claude Max 20x $200', model:'Claude Fable 5.1', ii:53, p:{in:10,cache:0.25,out:50}, allowance:{yi:17.28}, conf:'community', src:'https://real-api-pricing.vercel.app/' },
+    { id:'glmcpp-glm53', vendor:'zhipu', plan:'GLM Coding Plan Pro ¥538', feeUsd:79.92, model:'GLM-5.3', ii:45, p:{in:1.4,cache:0.26,out:4.4}, allowance:{credits:257143, f:{in:6.9,cache:1.7,out:24}}, conf:'derived', src:'https://docs.bigmodel.cn/cn/coding-plan/overview', note:'月费为媒体口径;额度=周 60000 积分×30/7;按峰时系数保守计算,非峰时半价实际可用量翻倍' },
+  ],
+
   mechanics: [
     { channel:'OpenRouter', how:'预充值积分(卡 5.5% 费、Crypto 5%、支付宝);BYOK 每月 $25k 内免推理费,超出 5%;:free 每日 50-1000 次;:batch 恒 5 折;部分路由存在与官方不符的促销价(如 GLM-5.3、Kimi K3),已标注', src:'https://openrouter.ai/docs/faq' },
     { channel:'OpenCode Go($10/月)/ Go Plus($40/月)', how:'订阅制:每模型每月美元额度(Go 档 $15-80 不等),5h=20%/周=50%/月=100% 窗口;token 单价=批发价直传、两档相同;额尽可切余额按量;Contributor 模型以训练数据换折扣(区域限制)', src:'https://opencode.ai/v2/docs/console/go/' },
@@ -224,6 +261,9 @@ export const DATA = {
     { name:'Mistral Pricing', url:'https://docs.mistral.ai/inference/pricing' },
     { name:'OpenRouter Models API(2026-10-12 拉取)', url:'https://openrouter.ai/api/v1/models' },
     { name:'OpenCode Go 控制台定价', url:'https://opencode.ai/v2/docs/console/go/' },
+    { name:'Real API Pricing(订阅实测月量数据集,MIT)', url:'https://real-api-pricing.vercel.app/' },
+    { name:'Real API Pricing 开放数据 points.json', url:'https://real-api-pricing.vercel.app/data/points.json' },
+    { name:'real-api-pricing GitHub 仓库', url:'https://github.com/FeiZhuLulu/real-api-pricing' },
     { name:'OpenRouter Space Bunny Alpha(stealth)', url:'https://openrouter.ai/stealth/space-bunny-alpha' },
     { name:'Artificial Analysis 模型榜(v4.3.2)', url:'https://artificialanalysis.ai/leaderboards/models' },
     { name:'人民币汇率中间价(中国货币网)', url:'https://www.chinamoney.com.cn/chinese/bkccpr/' },
@@ -238,6 +278,8 @@ export const DATA = {
     '<b>能力指数换版</b>:AA 由 v4.1.1 升至 v4.3.2,与 8 月旧分数不可直接比较;GLM-5.2、Kimi K2.7、Grok 4.5/4.3 等未收录模型的旧分已清空而非沿用。',
     '<b>OpenCode Go</b> 为订阅渠道($10/月),图中 OC Go 点为每-token 单价(批发直传),但实际可用量受每模型月度额度约束(如 GLM-5.3 每月 $15);额度用尽后需切按量或等刷新。',
     '<b>Contributor 折扣</b>:Muse Spark 1.3 Contributor 的 $0.1/$0.2 单价以「你的数据可用于训练」换取(区域限制、非 ZDR),隐私敏感场景请勿选用。',
+    '<b>订阅真实价视图</b>:真实单价 = 月费 ÷ 月可用 tokens。OC Go 按官方每模型美元额度换算;ChatGPT/Claude 各档月量来自 real-api-pricing 社区实测(置信度已标);GLM Coding Plan 由官方积分系数在峰时口径下推导。前提是「饱和用满月度额度」——普通用户实际单价更高。',
+    '<b>混合口径</b>:均衡口径沿用 AA 7:2:1;重度 agent 口径(97 缓存/2.5 输入/0.5 输出)更接近编码代理的真实账单结构,对缓存便宜的渠道(DeepSeek/OC Go)更有利。口径切换会同时重算订阅真实价。',
     '人民币价格按 2026-10-12 中间价 6.7313 折算;免费限量(:free)受每日请求数限制不参与斩杀;Space Bunny Alpha 为匿名 stealth 模型,无价格与指数,仅列说明。',
     'OpenCode Zen 公开价目文档已下线(转登录态),本版未纳入其渠道行;GPU 云与云转售部分行沿用 8-27 核实价,已逐条标注。',
   ],
