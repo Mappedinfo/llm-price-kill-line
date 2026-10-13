@@ -102,7 +102,8 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn, onReset 
     const onWheel = (e) => {
       e.preventDefault();
       const rect = el.getBoundingClientRect();
-      zoomAt(e.clientX - rect.left, e.clientY - rect.top, e.deltaY > 0 ? 1.18 : 1 / 1.18);
+      const dy = Math.max(-150, Math.min(150, e.deltaY));
+      zoomAt(e.clientX - rect.left, e.clientY - rect.top, Math.exp(dy * 0.0012));
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => el.removeEventListener('wheel', onWheel);
@@ -114,7 +115,7 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn, onReset 
     const px = e.clientX - rect.left, py = e.clientY - rect.top;
     drag.current = e.shiftKey
       ? { mode: 'box', ax: px, ay: py }
-      : { mode: 'pan', px, py };
+      : { mode: 'pan', px, py }; // px/py = 上一次事件位置,平移按增量计算
     svgRef.current.setPointerCapture?.(e.pointerId);
   };
   const onPointerMove = (e) => {
@@ -124,6 +125,7 @@ export default function KillLineChart({ rows, basis, labelsOn, focusOn, onReset 
     const px = e.clientX - rect.left, py = e.clientY - rect.top;
     if (d.mode === 'pan') {
       panBy(d.px - px, py - d.py);
+      d.px = px; d.py = py; // 关键:只平移本次增量,避免全程位移反复叠加越拖越快
     } else {
       setBox({ x0: Math.min(d.ax, px), y0: Math.min(d.ay, py), x1: Math.max(d.ax, px), y1: Math.max(d.ay, py) });
     }
